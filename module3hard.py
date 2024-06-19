@@ -1,19 +1,18 @@
 def sum_collection(collection):
     summator = 0
-    print('start')
     for i in collection:
-        print(i)
+        print(f'элемент: {i} _______ сумма:{summator}')
         match type_check(i):
             case 'list':
                 summator += sum_list(i)
             case 'dict':
-                pass
-                print('dict')
+                summator += sum_dict(i)
             case 'str':
                 summator += len(i)
             case 'int':
                 summator += i
     return summator
+
 
 def type_check(list_arg):
     if isinstance(list_arg, (list, set, tuple)):
@@ -34,17 +33,21 @@ def sum_list(list_):
         elif isinstance(i, str):
             summator += len(i)
         else:
-            sum_collection(i)
+            return summator + sum_list(i)
     return summator
 
 
 def sum_dict(dict_):
     summator = 0
+    for key, value in dict_.items():
+        summator += sum_collection(key)
+        summator += sum_collection(value)
+    return summator
+
 
 data_structure = [[1, 2, 3], {'a': 4, 'b': 5}, (6, {'cube': 7, 'drum': 8}), "Hello",
                   ((), [{(2, 'Urban', ('Urban2', 35))}])]
-#sum_collection(data_structure)
-test = [1, 2, [4, 5], 'qwert', 3]
-print(sum_collection(test))
+answer = sum_collection(data_structure)
+print(answer)
 
 
